@@ -51,7 +51,7 @@ $(function () {
                 }
             }
 
-            if(_storyStatus == '已测试待验收'){
+            if(_storyStatus == '已测试待验收' || _storyStatus == '已发布'){
 
                 dingdingUrl = hp_dingdingUrl
                 //console.log("发送需求钉钉提醒")
