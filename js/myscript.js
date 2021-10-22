@@ -20,20 +20,6 @@ $(function () {
     $('a[workflow-status-change=entityViewStatusChange]').click(function (){
         localStorage.setItem('preUrl', window.location.href);
     })
-    //需求列表
-    // $(document).on('click','#status_resolved',function() {
-    //     console.log("click bound to document listening for #status_resolved\n"+window.location.href);
-    //     localStorage.setItem('preUrl', window.location.href);
-    // });
-
-
-    //bug状态流转
-    /*
-    $('document #do-status').on('click','span',function(){
-        console.log(111)
-        alert('监控动态生成空间点击事件')
-    })*/
-    //$('document #do-status span').attr('click', myClick)
 
     //从缓存拿上个页面地址进行对比，并进行发送
     async function isSend() { 
@@ -68,8 +54,8 @@ $(function () {
             if(_storyStatus == '已测试待验收'){
 
                 dingdingUrl = hp_dingdingUrl
-                console.log("发送需求钉钉提醒")
-                //sendingMsg(await setStoryParams(),dingdingUrl)
+                //console.log("发送需求钉钉提醒")
+                sendingMsg(await setStoryParams(),dingdingUrl)
 
             }
         
