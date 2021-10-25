@@ -43,6 +43,21 @@ $(function () {
             var _storyCategory = $('#ContentCategory').attr('data-editable-value');
             var _storyStatus = $('a[workflow-status-change=entityViewStatusChange]').attr('title');
 
+            //是否需要验收
+            var _acceptance = $('#Content是否需要验收 > span').text();
+            console.log(acceptance)
+
+            //类型bug或story
+            if (location.href.indexOf('bugs')>=0) {
+                _type = 'bug'
+            }
+            else if (location.href.indexOf('stories')>=0)
+            {
+                _type = 'story'
+
+            }
+            //console.log(_type,location.href)
+
             if(_projectName == '线上问题记录库' ){
                 dingdingUrl = hp_dingdingUrl
                 if(_bugStatus == "问题已解决" || _bugStatus == "问题待确认" || _bugStatus == "问题待观察" || _bugStatus == "待反馈方回复" || _bugStatus == "问题解决中" || _bugStatus == "转 需求/bug"){
@@ -51,10 +66,8 @@ $(function () {
                 }
             }
 
-            if(_storyStatus == '已测试待验收' || _storyStatus == '已发布'){
-
+            if(_storyStatus == '已测试待验收' || _storyStatus == '已发布' || _type == 'story' || _acceptance != '不需要验收' ){
                 dingdingUrl = hp_dingdingUrl
-                //console.log("发送需求钉钉提醒")
                 sendingMsg(await setStoryParams(),dingdingUrl)
 
             }
@@ -150,6 +163,13 @@ $(function () {
         _bugOwners = _bugOwners.replace(/\(.*?\)/g,'');
         var _mobileList =await getMobiles(_bugOwners);
         console.log(_storyUrl,_storyTitle,_storyStatus,_bugOwners,_mobileList)
+        if (_storyStatus == '已测试待验收'){
+            var _storyRemind = "该需求已变更为【"+_storyStatus+"】,请预留时间及时验收。"
+        }
+        else if (_storyStatus == '已发布')
+        {
+            var _storyRemind = "该需求已变更为【"+_storyStatus+"】,请悉知。"
+        }
 
         var params = {
             "msgtype": "text",
@@ -157,7 +177,7 @@ $(function () {
             "content": "需求:" + _storyTitle + 
             "\n链接:" + _storyUrl+
             "\n状态:" +_storyStatus+
-            "\n该需求已进入【"+_storyStatus+"】请预留时间及时验收"
+            "\n"+_storyRemind
             },
             "at":{
                 "atMobiles": _mobileList,
