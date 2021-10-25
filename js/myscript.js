@@ -45,7 +45,7 @@ $(function () {
 
             //是否需要验收
             var _acceptance = $('#Content是否需要验收 > span').text();
-            console.log(acceptance)
+            console.log(_acceptance)
 
             //类型bug或story
             if (location.href.indexOf('bugs')>=0) {
@@ -56,7 +56,7 @@ $(function () {
                 _type = 'story'
 
             }
-            //console.log(_type,location.href)
+            console.log(_type,location.href)
 
             if(_projectName == '线上问题记录库' ){
                 dingdingUrl = hp_dingdingUrl
@@ -66,7 +66,7 @@ $(function () {
                 }
             }
 
-            if(_storyStatus == '已测试待验收' || _storyStatus == '已发布' || _type == 'story' || _acceptance != '不需要验收' ){
+            if(_storyStatus == '已测试待验收' || _storyStatus == '已发布' && _type == 'story' && _acceptance != '不需要验收' ){
                 dingdingUrl = hp_dingdingUrl
                 sendingMsg(await setStoryParams(),dingdingUrl)
 
