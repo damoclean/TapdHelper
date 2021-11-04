@@ -11,6 +11,8 @@
     "notifications",
  	  "background",
 	  "webRequest",
+    "tabs",
+    "storage",
     "http://*/*",
     "https://*/*"
   ],
@@ -18,6 +20,15 @@
     "scripts": [
       "js/background.js"
     ]
+  },
+  "commands":{
+    "release-copy":{
+      "suggested_key":{
+        "default":"Alt+S",
+        "mac":"MacCtrl+S"
+      },
+      "description":"release copy"
+    }
   },
   "manifest_version": 2,
   "content_scripts": [
