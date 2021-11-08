@@ -141,27 +141,28 @@ function copyTextToClipboard(text) {
          localStorage.setItem('preUrl', window.location.href);
      });
 
-     //左侧状态变更
+     //左侧状态变更-无法获取弹窗的click事件临时处理
      $('a[workflow-status-change=entityViewStatusChange]').click(function() {
          localStorage.setItem('preUrl', window.location.href);
      });
      //列表状态变更
-     $('a[workflow-status-change=storieslistResponse]').each(function() {
-         undefined
-         $(this).click(function() {
-             undefined
-             localStorage.setItem('preUrl', window.location.href);
-             var _storyStatus = $(this).attr('title');
-             var _storyTitle = $(this).parent().parent().find('.j-story-title-link-proxy').attr('title')
-             var _storyUrl = $(this).parent().parent().find('.j-story-title-link-proxy').attr('href')
-             console.log(_storyStatus, _storyTitle, _storyUrl)
-         });
-     });
+     // $('a[workflow-status-change=storieslistResponse]').each(function() {
+     //     undefined
+     //     $(this).click(function() {
+     //         undefined
+     //         localStorage.setItem('preUrl', window.location.href);
+     //         var _storyStatus = $(this).attr('title');
+     //         var _storyTitle = $(this).parent().parent().find('.j-story-title-link-proxy').attr('title')
+     //         var _storyUrl = $(this).parent().parent().find('.j-story-title-link-proxy').attr('href')
+     //         console.log(_storyStatus, _storyTitle, _storyUrl)
+     //         isSend();
+     //     });
+     // });
      //从缓存拿上个页面地址进行对比，并进行发送
      async function isSend() {
          var _preUrl = localStorage.getItem('preUrl');
          var _referrer = document.referrer;
-         console.log(_preUrl,_referrer)
+         console.log('_preUrl:'+_preUrl+'\n_referrer:'+_referrer)
          if (_preUrl == _referrer) {
              //类型bug或story
              if (_eventType == 'Bug') {

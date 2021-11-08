@@ -1,7 +1,7 @@
 {
   "name": "TapdHelper",
-  "version": "1.1",
-  "description": "tapd提交bug后给钉钉发送消息",
+  "version": "1.2",
+  "description": "tapd与钉钉消息通知",
   "icons": {
     "16": "16.png",
     "48": "48.png",
