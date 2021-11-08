@@ -154,16 +154,15 @@ function copyTextToClipboard(text) {
              var _storyStatus = $(this).attr('title');
              var _storyTitle = $(this).parent().parent().find('.j-story-title-link-proxy').attr('title')
              var _storyUrl = $(this).parent().parent().find('.j-story-title-link-proxy').attr('href')
-             var_
-             console.log(_storyStatus, _storyTitle, _storyUrl, _referrer)
+             console.log(_storyStatus, _storyTitle, _storyUrl)
          });
      });
      //从缓存拿上个页面地址进行对比，并进行发送
      async function isSend() {
          var _preUrl = localStorage.getItem('preUrl');
          var _referrer = document.referrer;
+         console.log(_preUrl,_referrer)
          if (_preUrl == _referrer) {
-
              //类型bug或story
              if (_eventType == 'Bug') {
 
