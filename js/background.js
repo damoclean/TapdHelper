@@ -1,7 +1,6 @@
 //本地用户映射
 var userDict = {
-	'刘新红1': "13958170200",
-	'章帆': "17376563165",
+	'测试': "123456789"
 };
 var test_dingdingUrl = "https://oapi.dingtalk.com/robot/send?access_token=f8858b0b1acd8df3a3a1de8b08bfc467714c289c77c53026e0832ed86dbdd0ae";
 var delivery_dingdingUrl = "https://oapi.dingtalk.com/robot/send?access_token=4253c460fb22d30f0d34b4d34efb80d2761b5518f2c9ff2730e7ed6513492bb0";
