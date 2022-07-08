@@ -24,7 +24,7 @@ window.onload = function() {
 			xhr.onreadystatechange = function() {
 				new Notification('推送钉钉消息', {
 					icon: '48.png',
-					body: '接收消息的用户：' + request.name
+					body: '接收消息的用户：' + owner
 				});
 			}
 			xhr.open("POST", dingdingUrl, true);
@@ -66,14 +66,14 @@ window.onload = function() {
 				console.log('获取本地mobile：' + userList[i] + '-' + mobileList[i])
 			} else {
 				//后端封装了个简单的接口，用于获取通知人的电话
-				url = 'http://47.114.109.149:6869/user/getPhone?tapdUserAccount=' + userList[i]
+				url = 'http://47.242.73.37:6869/user/getPhone?tapdUserAccount=' + userList[i]
 				console.log(url)
 				mobileList[i] = await getMobile(url)
 				console.log('获取网络mobile：' + userList[i] + '-' + mobileList[i])
 			}
 			console.log("获取通知人电话list："+mobileList)
-			return mobileList;
 		}
+		return mobileList;
 	}
 	//单个获取电话号码
 	async function getMobile(url) {

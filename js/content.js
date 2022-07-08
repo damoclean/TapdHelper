@@ -51,7 +51,7 @@
      //作者
      var _owner = $('#new_nav_avatar_div > a').attr('title')
      //需求   ID1020338   【搜索结果页】筛选排序规则优化 李攀  贾三丰 feature/ID1020332_sort_youhua   无   李菁菁 https://www.tapd.cn/52668357/prong/stories/view/1152668357001020338&from=worktable_title
-     var _copyCont = _eventType + '\t' + _storyId + '\t' + _storyTitle + '\t'+_owner+'\t\t\t\t' + _bugCreaters + '\t' + _storyUrl
+     var _copyCont = _eventType + '\t' + _storyTitle + '\t\t'+_owner+'\t\t' + _bugCreaters + '\t' + _storyUrl
  };
  chrome.runtime.onMessage.addListener(
      function(request, sender, sendResponse) {
