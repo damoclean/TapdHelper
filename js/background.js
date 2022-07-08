@@ -19,6 +19,7 @@ window.onload = function() {
 			var owner = request.msg.params.at['atMobiles'];
 			// var _mobileList = getMobiles(owner)
 			request.msg.params.at['atMobiles'] = await getMobiles(owner);
+			request.msg.params.at['atDingtalkIds'] = request.msg.params.at['atMobiles'];
 			console.log(request.msg.params)
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function() {
@@ -78,7 +79,7 @@ window.onload = function() {
 	//单个获取电话号码
 	async function getMobile(url) {
 		//return await fetch(url).then(response=>response.text()).catch(e => console.log("Oops,error",e))
-		return await fetch(url).then(response => response.json()).catch(e => console.log("Oops,error", e));
+		return await fetch(url).then(response => response.text()).catch(e => console.log("Oops,error", e));
 	}
 	//字符串解析分割
 	function splitStr(str, regx) {

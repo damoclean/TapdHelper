@@ -169,7 +169,7 @@
              "at": {
                  "atMobiles": _mobileList,
                  //支持钉钉号通知
-                 // "atDingtalkIds": _mobileList,
+                 "atDingtalkIds": _mobileList,
                  "isAtAll": false
              }
 
