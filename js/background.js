@@ -60,6 +60,7 @@ window.onload = function() {
 		console.log("bugOwners:"+bugOwners)
 		var userList = splitStr(bugOwners, ";").filter((v) => v)
 		console.log("userList:" + userList)
+		var mobileList = []
 		for (let i = 0; i < userList.length; i++) {
 			if (userList[i] in userDict) {
 				//获取本地mobile
