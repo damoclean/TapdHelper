@@ -3,10 +3,11 @@
   "version": "1.2",
   "description": "tapd与钉钉消息通知",
   "icons": {
-    "16": "16.png",
-    "48": "48.png",
-    "128": "128.png"
+    "16": "icon/16.png",
+    "48": "icon/48.png",
+    "128": "icon/128.png"
   },
+  
   "permissions": [
     "notifications",
  	  "background",
@@ -42,6 +43,9 @@
       ]
     }
   ],
+  "browser_action":{
+    "default_popup": "popup.html"
+  },
   "web_accessible_resources": [
     "48.png"
   ]

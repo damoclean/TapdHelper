@@ -2,14 +2,75 @@
 var userDict = {
 	'测试': "123456789"
 };
-var test_dingdingUrl = "https://oapi.dingtalk.com/robot/send?access_token=f8858b0b1acd8df3a3a1de8b08bfc467714c289c77c53026e0832ed86dbdd0ae";
-var delivery_dingdingUrl = "https://oapi.dingtalk.com/robot/send?access_token=4253c460fb22d30f0d34b4d34efb80d2761b5518f2c9ff2730e7ed6513492bb0";
-var hp_dingdingUrl = "https://oapi.dingtalk.com/robot/send?access_token=1a3d8bfb6fd2e0725c31b548e1f0a0cc893d549b2f14d20677f1b535b8e53b09"
-
-
-
-var dingdingUrl = hp_dingdingUrl
+var INIT_SUPPORT_URL = "https://oapi.dingtalk.com/robot/send?access_token=1a3d8bfb6fd2e0725c31b548e1f0a0cc893d549b2f14d20677f1b535b8e53b09";
+var INIT_STORE_URL = "";
+var INIT_BUG_URL = "";
 var mobileList = new Array();
+
+chrome.runtime.onInstalled.addListener(function() {
+	chrome.storage.local.set({
+		support_url: INIT_SUPPORT_URL,
+		store_url: INIT_STORE_URL,
+		bug_url: INIT_BUG_URL
+	})
+});
+
+function initPara(support_url, store_url, bug_url) {
+	chrome.storage.local.set({
+		'support_url': INIT_SUPPORT_URL
+	}, function() {
+		console.log('support_url:' + support_url)
+	});
+	chrome.storage.local.set({
+		'store_url': INIT_STORE_URL
+	}, function() {
+		console.log('store_url:' + store_url)
+	});
+	chrome.storage.local.set({
+		'bug_url': INIT_BUG_URL
+	}, function() {
+		console.log('bug_url:' + bug_url)
+	});
+}
+
+function setPara(support_url, store_url, bug_url) {
+	chrome.storage.local.set({
+		'support_url': support_url
+	}, function() {
+		console.log('support_url:' + support_url)
+	});
+	chrome.storage.local.set({
+		'store_url': store_url
+	}, function() {
+		console.log('store_url:' + store_url)
+	});
+	chrome.storage.local.set({
+		'bug_url': bug_url
+	}, function() {
+		console.log('bug_url:' + bug_url)
+	});
+};
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+	for (key in changes) {
+		var storageChange = changes[key];
+		console.log('存储键“%s”（位于“%s”命名空间中）已更改。' +
+			'原来的值为“%s”，新的值为“%s”。',
+			key,
+			namespace,
+			storageChange.oldValue,
+			storageChange.newValue);
+	}
+	if (key == 'support_url') {
+		support_dingdingUrl = storageChange.newValue
+	};
+	if (key == 'store_dingdingUrl') {
+		store_dingdingUrl = storageChange.newValue
+	};
+	if (key == 'store_dingdingUrl') {
+		bug_dingdingUrl = storageChange.newValue
+	};
+});
+
 
 window.onload = function() {
 
@@ -18,21 +79,47 @@ window.onload = function() {
 		async function(request, sender, sendResponse) {
 			var owner = request.msg.params.at['atMobiles'];
 			// var _mobileList = getMobiles(owner)
+			var content = request.msg.params.text.content
+
+			chrome.storage.local.get(['support_url', 'store_url', 'bug_url'], function(result) {
+				if (result) {
+					support_dingdingUrl = result.support_url
+					store_dingdingUrl = result.store_url
+					bug_dingdingUrl = result.bug_url
+					if (content.search("项目:线上问题记录库") != -1) {
+						dingdingUrl = support_dingdingUrl;
+
+					} else if (content.search("需求:") != -1) {
+						dingdingUrl = store_dingdingUrl;
+
+					} else if (content.search("BUG:") != -1) {
+						dingdingUrl = bug_dingdingUrl;
+					} else {
+						dingdingUrl = support_dingdingUrl;
+					}
+
+				}
+			});
+
 			request.msg.params.at['atMobiles'] = await getMobiles(owner);
 			request.msg.params.at['atDingtalkIds'] = request.msg.params.at['atMobiles'];
-			console.log(request.msg.params)
-			var xhr = new XMLHttpRequest();
-			xhr.onreadystatechange = function() {
-				new Notification('推送钉钉消息', {
-					icon: '48.png',
-					body: '接收消息的用户：' + owner
-				});
+			console.log(request.msg.params.text.content)
+			console.log('dingdingUrl:' + dingdingUrl)
+			if (dingdingUrl != '') {
+				var xhr = new XMLHttpRequest();
+				xhr.onreadystatechange = function() {
+					new Notification('推送钉钉消息', {
+						icon: 'icon/48.png',
+						body: '接收消息的用户：' + owner
+					});
+				}
+				xhr.open("POST", dingdingUrl, true);
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.send(JSON.stringify(request.msg.params));
+				sendResponse(JSON.stringify(request))
+
 			}
-			xhr.open("POST", dingdingUrl, true);
-			xhr.setRequestHeader("Content-Type", "application/json");
-			xhr.send(JSON.stringify(request.msg.params));
-			sendResponse(JSON.stringify(request))
-			return true;	
+			return true;
 		});
 
 
@@ -57,7 +144,7 @@ window.onload = function() {
 	});
 	//获取处理人联系电话
 	async function getMobiles(bugOwners) {
-		console.log("bugOwners:"+bugOwners)
+		console.log("bugOwners:" + bugOwners)
 		var userList = splitStr(bugOwners, ";").filter((v) => v)
 		console.log("userList:" + userList)
 		var mobileList = []
@@ -73,7 +160,7 @@ window.onload = function() {
 				mobileList[i] = await getMobile(url)
 				console.log('获取网络mobile：' + userList[i] + '-' + mobileList[i])
 			}
-			console.log("获取通知人电话list："+mobileList)
+			console.log("获取通知人电话list：" + mobileList)
 		}
 		return mobileList;
 	}
